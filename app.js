@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let upTimerId;
   let downTimerId;
   let isJumping = false;
+  let isGoingLeft = false;
+  let isGoingRight = false;
+  let leftTimerId;
+  let rightTimerId;
 
   function createDoodler() {
     grid.appendChild(doodler);
@@ -95,19 +99,37 @@ document.addEventListener("DOMContentLoaded", () => {
   function control(e) {
     if (e.key === "ArrowLeft") {
       moveLeft();
+      console.log("left button clicked");
     } else if (e.key === "ArrowRight") {
-      //move right
+      moveRight();
+      console.log("right button clicked");
     } else if (e.key === "ArrowUp") {
       //move straight
     }
+  }
+  function moveLeft() {
+    isGoingRight = false;
+    isGoingLeft = true;
+    leftTimerId = setInterval(function () {
+      doodlerLeftSpace -= 5;
+      doodler.style.left = doodlerLeftSpace + "px";
+    }, 30);
+  }
+  function moveRight() {
+    isGoingLeft = false;
+    isGoingRight = true;
+    rightTimerId = setInterval(function () {
+      doodlerLeftSpace += 5;
+      doodler.style.right = doodlerLeftSpace + "px";
+    }, 30);
   }
 
   function start() {
     if (!isGameOver) {
       createPlatForms();
       createDoodler();
-
       setInterval(movePlatForms, 30);
+      document.addEventListener("keyup", control);
       jump();
     }
   }
